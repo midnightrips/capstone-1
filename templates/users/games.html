@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Games Played by {{ user.username }}{% endblock %}
+
+{% block content %}
+<h1>Games {{ user.username }} has played: </h1>
+{% if games %}
+<ul class="list-group">
+    {% for game in games %}
+    <li class="list-group-item">
+        <div class="message-area">
+            <form method="POST" action="/games/add-like/{{ game.id }}" style="display:inline;">
+                {% set is_favorited = False %}
+                {% for favorite in user.favorites %}
+                {% if favorite.game_id == game.id %}
+                {% set is_favorited = True %}
+                {% endif %}
+                {% endfor %}
+
+                {% if is_favorited %}
+                <button type="submit" style="background:none; border:none; cursor:pointer; padding:0;">
+                    <i id="star" class="bi bi-star-fill" style="color: gold;"></i>
+                </button>
+                {% else %}
+                <button type="submit" style="background:none; border:none; cursor:pointer; padding:0;">
+                    <i id="star" class="bi bi-star"></i>
+                </button>
+                {% endif %}
+            </form>
+            <a href="/games/{{ game.id }}">{{ game.title }}</a> - Played on {{ game.played_at }}
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No games played yet.</p>
+<a href="/start" class="btn btn-outline-secondary">Play a game!</a>
+{% endif %}
+
+{% endblock %}

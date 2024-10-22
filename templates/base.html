@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.3/lumen/bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="/" class="navbar-brand">
+                    <span>MentalGaming</span>
+                </a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                {% if not g.user %}
+                <li style="padding-right: 10px;"><a href="/register">Sign up</a></li>
+                <li><a href="/login">Log in</a></li>
+                {% else %}
+                <li style="padding-right: 10px;">
+                    <a href="/users/{{ g.user.id }}">{{ g.user.username }}</a>
+                </li>
+                <li style="padding-right: 10px;">
+                    <a href="/users/favorites">Favorites</a>
+                </li>
+                <li style="padding-right: 10px;">
+                    <a href="/users/{{g.user.id}}/games">Your Games</a>
+                </li>
+                <li><a href="/logout">Log Out</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        {% for category, message in get_flashed_messages(with_categories=True) %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+
+        {% block content %}
+        {% endblock %}
+
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.js"></script>
+    <script src="/static/app.js"></script>
+</body>
+
+</html>
