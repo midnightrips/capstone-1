@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Game Choices{% endblock %}
+
+{% block content %}
+<h1>Choose your game:</h1>
+
+<form method="POST" action="/games/save-game">
+    <ul>
+        {% for game in games %}
+        <li>
+            <h2>{{ game.title }}: #{{ game.id }}</h2>
+            <p>{{ game.description }}</p>
+            <input type="radio" name="game_id" value="{{ game.id }}" id="game_{{ game.id }}" style="display: none;">
+            <a href="#" class="btn btn-outline-secondary" onclick="selectGame('{{ game.id }}', '{{ game.url }}')">Select
+                and play {{ game.title }}</a>
+        </li>
+        <br>
+        {% endfor %}
+    </ul>
+    <p><b>STOP: Have you selected and played a game? If so, click the button below to take your post-game survey!</b>
+    </p>
+    <button type="submit">Save Game</button>
+</form>
+<br>
+<p>Don't like the options? Click below for 3 other choices!</p>
+<a href="/games" class=" btn btn-outline-primary">New games</a>
+<br>
+
+{% endblock %}

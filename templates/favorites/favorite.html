@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Favorites{% endblock %}
+
+{% block content %}
+<h1>Your favorite games!</h1>
+<div class="col-lg-6 col-md-8 col-sm-12"></div>
+{% if games %}
+<ul class="list-group" id="favorites">
+    {% for game in games %}
+    <li class="list-group-item">
+        <a href="/games/{{ game.id }}" class="message-link"></a>
+        <div class="message-area">
+
+            <a href="/games/{{ game.id }}">{{ game.title }}</a>
+            <form method="POST" action="/games/add-like/{{ game.id }}" style="display:inline;">
+                {% set is_favorited = False %}
+                {% for favorite in user.favorites %}
+                {% if favorite.game_id == game.id %}
+                {% set is_favorited = True %}
+                {% endif %}
+                {% endfor %}
+
+                {% if is_favorited %}
+                <button type="button" id="favorite" class="favorite-btn" data-game-id="{{ game.id }}"
+                    style="background:none; border:none; cursor:pointer; padding:0;">
+                    {% if is_favorited %}
+                    <i class="star bi bi-star-fill filled" style="color: gold;"></i>
+                    {% else %}
+                    <i class="star bi bi-star unfilled" style="color: grey;"></i>
+                    {% endif %}
+                </button>
+                {% endif %}
+            </form>
+
+            <p>Genre: {{ game.genre }}</p>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No favorites yet.</p>
+{% endif %}
+</div>
+{% endblock %}
